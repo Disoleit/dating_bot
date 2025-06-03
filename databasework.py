@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 
 
 from models import create_tables, Users, Candidates, Photos, Interactions
-DSN = 'postgresql://postgres:130006@localhost:5432/dating_bot'
+DSN = 'postgresql://<username>:<password>@<host>:<port>/<database>'
 engine = sqlalchemy.create_engine(DSN)
 
 create_tables(engine)
