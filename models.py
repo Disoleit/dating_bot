@@ -29,7 +29,7 @@ class Candidates(Base):
     photos = relationship('Photos', back_populates='candidate')
     interactions = relationship('Interactions', back_populates='candidate')
     user_candidates = relationship('UsersCandidates', back_populates='candidate')
-    
+
 class UsersCandidates(Base):
 
     __tablename__ = 'users_candidates'
@@ -39,6 +39,7 @@ class UsersCandidates(Base):
 
     user = relationship('Users', back_populates='user_candidates')
     candidate = relationship('Candidates', back_populates='user_candidates')
+
 class Photos(Base):
     __tablename__ = 'photos'
 
