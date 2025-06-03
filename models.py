@@ -13,9 +13,8 @@ class Users(Base):
     gender = sq.Column(sq.String(length=15), nullable=False)
     city = sq.Column(sq.String(length=50), nullable=False)
 
-    candidates = relationship('Candidates', back_populates='user')
     interactions = relationship('Interactions', back_populates='user')
-
+    user_candidates = relationship('UsersCandidates', back_populates='user')
 
 class Candidates(Base):
     __tablename__ = 'candidates'
@@ -26,13 +25,20 @@ class Candidates(Base):
     age = sq.Column(sq.Integer, nullable=False)
     gender = sq.Column(sq.String(length=15), nullable=False)
     city = sq.Column(sq.String(length=50), nullable=False)
-    matched_for = sq.Column(sq.Integer, sq.ForeignKey('users.id'), nullable=False)
 
-    user = relationship('Users', back_populates='candidates')
     photos = relationship('Photos', back_populates='candidate')
     interactions = relationship('Interactions', back_populates='candidate')
+    user_candidates = relationship('UsersCandidates', back_populates='candidate')
+    
+class UsersCandidates(Base):
 
+    __tablename__ = 'users_candidates'
+    id = sq.Column(sq.Integer, primary_key=True)
+    user_id = sq.Column(sq.Integer, sq.ForeignKey('users.id'), nullable=False)
+    candidate_id = sq.Column(sq.Integer, sq.ForeignKey('candidates.id'), nullable=False)
 
+    user = relationship('Users', back_populates='user_candidates')
+    candidate = relationship('Candidates', back_populates='user_candidates')
 class Photos(Base):
     __tablename__ = 'photos'
 
