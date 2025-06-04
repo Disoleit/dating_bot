@@ -11,5 +11,6 @@ GROUP_ID = os.getenv("GROUP_ID")  # ID сообщества
 API_VERSION = "5.199"  # Версия VK API
 
 # Параметры поиска по умолчанию
-DEFAULT_AGE = 25
+DEFAULT_AGE = 35
 DEFAULT_CITY = 1  # Москва
+DEFAULT_CITY_TITLE = "Москва"
