@@ -1,0 +1,9 @@
+dating_bot/
+├── main.py              # Точка входа
+├── vk_dating_bot/       # Модули бота
+│   ├── __init__.py
+│   ├── bot.py           # Основной класс бота
+│   ├── keyboards.py     # Клавиатуры для бота
+│   ├── vk_tools.py      # Инструменты для работы с VK API
+├── config.py            # Конфигурация с токенами
+└── requirements.txt     # Зависимости
