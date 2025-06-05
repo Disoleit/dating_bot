@@ -1,4 +1,11 @@
-# created by virtualenv automatically
+
 pyvenv.cfg
 /Lib
 /Scripts
+
+
+
+
+/.venv/
+.idea
+
