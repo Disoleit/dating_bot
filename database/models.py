@@ -8,10 +8,10 @@ class Users(Base):
 
     id = sq.Column(sq.Integer, primary_key=True)
     vk_id = sq.Column(sq.Integer, unique=True, nullable=False)
-    name = sq.Column(sq.String(length=50), nullable=False)
-    age = sq.Column(sq.Integer, nullable=False)
-    gender = sq.Column(sq.String(length=15), nullable=False)
-    city = sq.Column(sq.String(length=50), nullable=False)
+    name = sq.Column(sq.String(length=50), nullable=True)
+    age = sq.Column(sq.Integer, nullable=True)
+    gender = sq.Column(sq.String(length=15), nullable=True)
+    city = sq.Column(sq.String(length=50), nullable=True)
 
     interactions = relationship('Interactions', back_populates='user')
     user_candidates = relationship('UsersCandidates', back_populates='user')
@@ -21,10 +21,10 @@ class Candidates(Base):
 
     id = sq.Column(sq.Integer, primary_key=True)
     vk_id = sq.Column(sq.Integer, unique=True, nullable=False)
-    name = sq.Column(sq.String(length=50), nullable=False)
-    age = sq.Column(sq.Integer, nullable=False)
-    gender = sq.Column(sq.String(length=15), nullable=False)
-    city = sq.Column(sq.String(length=50), nullable=False)
+    name = sq.Column(sq.String(length=50), nullable=True)
+    age = sq.Column(sq.Integer, nullable=True)
+    gender = sq.Column(sq.String(length=15), nullable=True)
+    city = sq.Column(sq.String(length=50), nullable=True)
 
     photos = relationship('Photos', back_populates='candidate')
     interactions = relationship('Interactions', back_populates='candidate')
@@ -45,9 +45,9 @@ class Photos(Base):
 
     id = sq.Column(sq.Integer, primary_key=True)
     candidate_id = sq.Column(sq.Integer, sq.ForeignKey('candidates.id'), nullable=False)
-    first_photo = sq.Column(sq.String(length=50), nullable=False)
-    second_photo = sq.Column(sq.String(length=50), nullable=False)
-    third_photo = sq.Column(sq.String(length=50), nullable=False)
+    first_photo = sq.Column(sq.String(length=50), nullable=True)
+    second_photo = sq.Column(sq.String(length=50), nullable=True)
+    third_photo = sq.Column(sq.String(length=50), nullable=True)
     account_link = sq.Column(sq.String(length=50), nullable=False)
 
     candidate = relationship('Candidates', back_populates='photos')

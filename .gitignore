@@ -3,8 +3,9 @@ pyvenv.cfg
 /Lib
 /Scripts
 
-
-
+/__pycache__
+/vk_dating_bot/__pycache__
+/include
 
 /.venv/
 .idea
