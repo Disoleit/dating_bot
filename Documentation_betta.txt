@@ -1,0 +1,36 @@
+def add_user(session, vk_id, name, age, gender, city):
+    Добавляет пользователя в таблицу Users
+    :param session: SQLAlchemy session
+    :param vk_id: VK ID пользователя
+    :param name: Имя пользователя
+    :param age: Возраст
+    :param gender: Пол
+    :param city: Город
+    :return: Созданный объект Users
+
+def add_candidate_with_link(session, user_vk_id, candidate_vk_id, name, age, gender, city, photos_data):
+    Добавляет кандидата и автоматически связывает его с пользователем
+    :param session: SQLAlchemy session
+    :param user_vk_id: VK ID пользователя, к которому привязываем кандидата
+    :param candidate_vk_id: VK ID кандидата
+    :param name: Имя кандидата
+    :param age: Возраст
+    :param gender: Пол
+    :param city: Город
+    :param photos_data: Словарь с данными фото {'first_photo': ..., 'second_photo': ..., 'third_photo': ..., 'account_link': ...}
+    :return: Кортеж (объект Candidates, объект UsersCandidates)
+
+def add_interaction(session, user_vk_id, candidate_vk_id, status):
+    Добавляет запись о взаимодействии между пользователем и кандидатом
+    :param session: SQLAlchemy session
+    :param user_vk_id: VK ID пользователя
+    :param candidate_vk_id: VK ID кандидата
+    :param status: Статус взаимодействия ('liked', 'disliked', 'matched' и т.д.)
+    :return: Созданный объект Interactions
+
+ def get_user_interactions_with_candidates(session, user_vk_id):
+    Получает всех кандидатов, связанных с пользователем через таблицу interactions,
+    вместе с информацией о взаимодействиях
+    :param session: SQLAlchemy session
+    :param user_vk_id: VK ID пользователя
+    :return: Список словарей с информацией о кандидатах и взаимодействиях
