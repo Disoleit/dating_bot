@@ -36,6 +36,34 @@ def add_user(session, vk_id, name, age, gender, city_id, city_title):
         raise
 
 
+def get_favorite_candidates(session, user_vk_id):
+    """Получение избранных кандидатов с фотографиями"""
+    try:
+        # Находим пользователя
+        user = session.query(Users).filter_by(vk_id=user_vk_id).first()
+        if not user:
+            raise ValueError(f"Пользователь с VK ID {user_vk_id} не найден")
+
+        # Получаем кандидатов с фото и статусом 'favorite'
+        candidates = session.query(
+                Candidates.vk_id,
+                Candidates.name,
+                Photos.first_photo,
+                Photos.second_photo,
+                Photos.third_photo
+        ).join(Interactions, Interactions.candidate_id == Candidates.id) \
+            .join(Photos, Photos.candidate_id == Candidates.id) \
+            .filter(
+                Interactions.user_id == user.id,
+                Interactions.status == 'favorite'
+        ).all()
+
+        return candidates
+
+    except Exception as e:
+        print(f"Ошибка при получении избранных кандидатов: {e}")
+        raise
+
 def add_candidate_with_link(session, user_vk_id, candidate_vk_id, name, age, gender, city_id, city_title, photos_data):
     try:
         # Находим пользователя

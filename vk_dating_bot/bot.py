@@ -3,11 +3,11 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.utils import get_random_id
 
 from database.databasework import Session
-from database.models import Users
+from database.models import Users, Candidates, Photos, Interactions
 from vk_dating_bot.vk_tools import VKTools
 from vk_dating_bot.keyboards import get_main_keyboard, get_settings_keyboard, get_search_keyboard, get_empty_keyboard
 from config import GROUP_TOKEN, GROUP_ID, DEFAULT_AGE, DEFAULT_CITY, DEFAULT_CITY_TITLE
-from database.crud import add_user, add_candidate_with_link, add_interaction, get_user_interactions_with_candidates
+from database.crud import add_user, add_candidate_with_link, add_interaction, get_favorite_candidates
 
 import time
 
@@ -470,29 +470,51 @@ class DatingBot:
 
         if candidate not in self.favorites[user_id]:
             self.favorites[user_id].append(candidate)
+            # Сохраняем взаимодействие с статусом 'favorite'
             self.save_interaction(user_id, candidate['id'], 'favorite')
             self.send_message(user_id, "✅ Добавлено в избранное!", keyboard=get_search_keyboard())
         else:
             self.send_message(user_id, "❌ Уже в избранном!", keyboard=get_search_keyboard())
 
     def show_favorites(self, user_id):
-        # if user_id not in self.favorites or not self.favorites[user_id]:
-        #     self.send_message(user_id, "У вас пока нет избранных кандидатов.")
-        #     return
-
-        # Получаем данные из БД
         session = Session()
         try:
-            interactions = get_user_interactions_with_candidates(session, user_id)
-            if not interactions:
+            # Получаем избранных кандидатов с фотографиями
+            favorites = get_favorite_candidates(session, user_id)
+
+            if not favorites:
                 self.send_message(user_id, "У вас пока нет избранных кандидатов.")
                 return
 
-            message = "⭐ Ваши избранные кандидаты:\n\n"
-            for i, candidate in enumerate(interactions, 1):
-                message += f"{i}. {candidate['candidate_name']} - https://vk.com/id{candidate['candidate_vk_id']}\n"
+            # Отправляем сообщение с количеством избранных
+            self.send_message(
+                    user_id,
+                    f"⭐ У вас {len(favorites)} избранных кандидатов:",
+                    keyboard=get_main_keyboard()
+            )
 
-            self.send_message(user_id, message)
+            time.sleep(0.5)  # Пауза перед отправкой фотографий
+
+            # Отправляем каждого кандидата
+            for i, candidate in enumerate(favorites, 1):
+                photos = []
+                if candidate.first_photo: photos.append(candidate.first_photo)
+                if candidate.second_photo: photos.append(candidate.second_photo)
+                if candidate.third_photo: photos.append(candidate.third_photo)
+
+                message = (
+                        f"⭐ Избранный кандидат #{i}:\n"
+                        f"👤 Имя: {candidate.name}\n"
+                        f"🔗 Ссылка: https://vk.com/id{candidate.vk_id}"
+                )
+
+                self.send_message(
+                        user_id,
+                        message,
+                        attachment=",".join(photos) if photos else None
+                )
+                time.sleep(0.5)
+
         except Exception as e:
             print(f"Ошибка при получении избранных: {e}")
             self.send_message(user_id, "Произошла ошибка при получении избранных кандидатов.")
