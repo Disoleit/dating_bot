@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+DSN=os.getenv('DSN')
+
 # Конфигурационные параметры
 GROUP_TOKEN = os.getenv("GROUP_TOKEN")  # Токен сообщества
 USER_TOKEN = os.getenv("USER_TOKEN")  # Токен приложения

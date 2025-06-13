@@ -5,5 +5,9 @@ dating_bot/
 │   ├── bot.py           # Основной класс бота
 │   ├── keyboards.py     # Клавиатуры для бота
 │   ├── vk_tools.py      # Инструменты для работы с VK API
+├── database/       # Модули бота
+│   ├── databasework.py     # Бд бота
+│   ├── models.py           # Модели таблиц бд бота
+│   ├── crud.py             # Модификация бд
 ├── config.py            # Конфигурация с токенами
 └── requirements.txt     # Зависимости
