@@ -1,18 +1,12 @@
-import sqlalchemy
-from requests import session
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from .models import Base
 from config import DSN
 
-
-from models import create_tables, Users, Candidates, Photos, Interactions, UsersCandidates
-# DSN = 'postgresql://<username>:<password>@<host>:<port>/<database>'
-DSN = DSN
-engine = sqlalchemy.create_engine(DSN)
-
-create_tables(engine)
-
+# Создание движка и фабрики сессий
+engine = create_engine(DSN, echo=True)
 Session = sessionmaker(bind=engine)
-session = Session()
 
-session.close()
-
+def create_tables():
+    """Создание таблиц (вызывается один раз при старте бота)"""
+    Base.metadata.create_all(engine)
